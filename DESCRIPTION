@@ -8,7 +8,7 @@ Authors@R:
            email = "vcastro@mgh.harvare.edu")
 Description: What the package does (one paragraph).
 Depends: R (>= 2.10)
-License: GPL-3
+License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
