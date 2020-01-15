@@ -42,14 +42,14 @@ CCS_ICD9PCS_map <- CCS_ICD9_PCS %>%
   inner_join(CCS_ICD9PCS_cat, by=c("'CCS LVL 2'" = "code")) %>% 
   select (cat_code, icd_code = "'ICD-9-CM CODE'") %>% 
   transmute(category_code = cat_code,
-            code = str_remove_all(icd_code, "'"),
+            code = str_remove_all(icd_code, "[^[:alnum:]]"),
             code_type = "ICD-9-PCS") %>% 
   bind_rows(
     CCS_ICD9_PCS %>% 
       inner_join(CCS_ICD9PCS_cat, by=c("'CCS LVL 3'" = "code")) %>% 
       select (cat_code, icd_code = "'ICD-9-CM CODE'") %>% 
       transmute(category_code = cat_code,
-                code = str_remove_all(icd_code, "'"),
+                code = str_remove_all(icd_code, "[^[:alnum:]]"),
                 code_type = "ICD-9-PCS")
   )
 
@@ -78,7 +78,7 @@ CCS_ICD10PCS_cat <- CCS_ICD10_PCS %>%
 CCS_ICD10PCS_map <- CCS_ICD10_PCS %>% 
   select(cat_code = "'CCS CATEGORY'", icd_code = "'ICD-10-PCS CODE'") %>% 
   transmute(category_code = as.integer(str_remove_all(cat_code, "'")),
-            code = str_remove_all(icd_code, "'"),
+            code = str_remove_all(icd_code, "[^[:alnum:]]"),
             code_type = "ICD-10-PCS") %>% 
   unique()
 
@@ -157,10 +157,5 @@ CCS_PCS_mapping <- bind_rows(CCS_ICD9PCS_map, CCS_ICD10PCS_map, CCS_HCPCS_map)
 
 
 
-usethis::use_data(CCS_PCS_categories)
-usethis::use_data(CCS_PCS_mapping)
-
-
-
-
-
+usethis::use_data(CCS_PCS_categories, overwrite = TRUE)
+usethis::use_data(CCS_PCS_mapping, overwrite = TRUE)
