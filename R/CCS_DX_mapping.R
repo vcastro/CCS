@@ -3,11 +3,11 @@
 #' A dataset containing the ICD-9-CM and ICD-10-CM codes for each CCS category
 #' 
 #'
-#' @format A data frame with 113440 obs. and 3 variables:
+#' @format A data frame with 86172 obs. and 3 variables:
 #' \describe{
 #'   \item{category_code}{Numeric CCS category code}
 #'   \item{code}{ICD-9 or ICD-10 diagnosis code, without prefixes or decimals}
-#'   \item{code_type}{Either ICD-9-CM or ICD-10-CM}
+#'   \item{vocabulary_id}{Either ICD-9-CM or ICD-10-CM}
 #' }
 #' @seealso \code{\link{CCS_DX_categories}} for a list of CCS categories.
 #'

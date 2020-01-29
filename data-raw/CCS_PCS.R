@@ -43,14 +43,14 @@ CCS_ICD9PCS_map <- CCS_ICD9_PCS %>%
   select (cat_code, icd_code = "'ICD-9-CM CODE'") %>% 
   transmute(category_code = cat_code,
             code = str_remove_all(icd_code, "[^[:alnum:]]"),
-            code_type = "ICD-9-PCS") %>% 
+            vocabulary_id = "ICD9PCS") %>% 
   bind_rows(
     CCS_ICD9_PCS %>% 
       inner_join(CCS_ICD9PCS_cat, by=c("'CCS LVL 3'" = "code")) %>% 
       select (cat_code, icd_code = "'ICD-9-CM CODE'") %>% 
       transmute(category_code = cat_code,
                 code = str_remove_all(icd_code, "[^[:alnum:]]"),
-                code_type = "ICD-9-PCS")
+                vocabulary_id = "ICD9PCS")
   )
 
 
@@ -79,7 +79,7 @@ CCS_ICD10PCS_map <- CCS_ICD10_PCS %>%
   select(cat_code = "'CCS CATEGORY'", icd_code = "'ICD-10-PCS CODE'") %>% 
   transmute(category_code = as.integer(str_remove_all(cat_code, "'")),
             code = str_remove_all(icd_code, "[^[:alnum:]]"),
-            code_type = "ICD-10-PCS") %>% 
+            vocabulary_id = "ICD10PCS") %>% 
   unique()
 
 
@@ -109,9 +109,9 @@ CCS_HCPCS_cat <- CCS_HCPCS %>%
 CCS_HCPCS_map <- CCS_HCPCS %>% 
   mutate(category_code = as.integer(CCS),
          code = map(code_range, expand_HCPCS_range),
-         code_type = "HCPCS") %>% 
+         vocabulary_id = "HCPCS") %>% 
   unnest(code) %>% 
-  select(category_code, code, code_type) %>% 
+  select(category_code, code, vocabulary_id ) %>% 
   unique()
 
 
@@ -130,14 +130,14 @@ CCS_HCPCS_map <- CCS_HCPCS %>%
 
 CCS_ICD_PCS_categories <- CCS_ICD10PCS_cat %>% 
   full_join(CCS_ICD9PCS_cat, by = c("cat_code")) %>% 
-  transmute(bodysystem = ifelse(cat_code == 68, "Operations on the digestive system", ifelse(is.na(bodysystem.x), bodysystem.y, bodysystem.x)),
+  transmute(code_chapter = ifelse(cat_code == 68, "Operations on the digestive system", ifelse(is.na(bodysystem.x), bodysystem.y, bodysystem.x)),
             category_code = cat_code,
             category_desc = ifelse(is.na(cat_desc.x), cat_desc.y, cat_desc.x)) 
 
 
 CCS_PCS_categories <- CCS_ICD_PCS_categories %>% 
   full_join(CCS_HCPCS_cat, by = c("category_code" = "cat_code")) %>% 
-  transmute(bodysystem = ifelse(category_code == 244, "Operations on the digestive system", 
+  transmute(code_chapter = ifelse(category_code == 244, "Operations on the digestive system", 
                                 ifelse(category_code >= 232, "Miscellaneous diagnostic and therapeutic procedures", bodysystem)),
             category_code = category_code,
             category_desc = cat_desc)
