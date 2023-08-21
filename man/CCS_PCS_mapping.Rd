@@ -4,12 +4,14 @@
 \name{CCS_PCS_mapping}
 \alias{CCS_PCS_mapping}
 \title{CCS Procedure Mapping}
-\format{A data frame with 139422 obs. and 3 variables:
+\format{
+A data frame with 139422 obs. and 3 variables:
 \describe{
   \item{category_code}{Numeric CCS procedure category code}
   \item{code}{ICD-9, ICD-10, or HCPCS procedure code, without prefixes or decimals}
   \item{code_type}{Either ICD-9-PCS, ICD-10-PCS or HCPCS}
-}}
+}
+}
 \source{
 \url{https://www.hcup-us.ahrq.gov/toolssoftware/ccs/Multi_Level_CCS_2015.zip}
 

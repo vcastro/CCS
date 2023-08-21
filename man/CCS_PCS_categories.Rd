@@ -4,12 +4,14 @@
 \name{CCS_PCS_categories}
 \alias{CCS_PCS_categories}
 \title{CCS Procedure Categories}
-\format{A data frame with 244 obs. and 3 variables:
+\format{
+A data frame with 244 obs. and 3 variables:
 \describe{
   \item{bodysystem}{CCS Level 1 description based on ICD body system}
   \item{category_code}{Numeric CCS procedure category code}
   \item{category_desc}{Description of CCS procedure category}
-}}
+}
+}
 \source{
 \url{https://www.hcup-us.ahrq.gov/toolssoftware/ccs/Multi_Level_CCS_2015.zip}
 
