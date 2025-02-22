@@ -61,7 +61,7 @@ CCS_ICD9PCS_map <- CCS_ICD9_PCS %>%
 ###
 ##########################################################
 
-download_extract(url = "https://www.hcup-us.ahrq.gov/toolssoftware/ccs10/ccs_pr_icd10pcs_2020_1.zip",
+download_extract(url = "https://hcup-us.ahrq.gov/toolssoftware/ccs10/ccs_pr_icd10pcs_2020_1.zip",
                  exdir = "data-raw",
                  files = c("ccs_pr_icd10pcs_2020_1.csv"))
 
@@ -70,7 +70,7 @@ CCS_ICD10_PCS <- read_csv("data-raw/ccs_pr_icd10pcs_2020_1.csv",
 
 
 CCS_ICD10PCS_cat <- CCS_ICD10_PCS %>% 
-  select(cat_code = "'CCS CATEGORY'", cat_desc = "'CCS CATEGORY DESCRIPTION'", bodysystem = "'MULTI CCS LVL 1 LABEL'") %>% 
+  select(cat_code = "'PROCEDURE CATEGORY'", cat_desc = "'CCS CATEGORY DESCRIPTION'", bodysystem = "'MULTI CCS LVL 1 LABEL'") %>% 
   mutate(cat_code = as.integer(gsub("'", "", cat_code, fixed=TRUE))) %>% 
   unique()
 
@@ -90,14 +90,16 @@ CCS_ICD10PCS_map <- CCS_ICD10_PCS %>%
 ###
 ##########################################################
 
-download_extract(url = "https://www.hcup-us.ahrq.gov/toolssoftware/ccs_svcsproc/2019_ccs_services_procedures.zip",
+download_extract(url = "https://hcup-us.ahrq.gov/toolssoftware/ccs_svcsproc/CCS_Services_Procedures_v2024-1.zip",
                  exdir = "data-raw",
-                 files = c("2019_ccs_services_procedures.csv"))
+                 files = c("CCS_Services_Procedures_v2024-1_100224.csv"))
 
-CCS_HCPCS <- read_csv("data-raw/2019_ccs_services_procedures.csv", 
+CCS_HCPCS <- read_csv("data-raw/CCS_Services_Procedures_v2024-1_100224.csv", 
                       col_types = cols(.default = col_character()), 
                       skip = 1) %>% 
   mutate(code_range = str_remove_all(`Code Range`, "'"))
+
+# add-ins: preventive, ED, ECT, 
 
 
 CCS_HCPCS_cat <- CCS_HCPCS %>% 
@@ -138,7 +140,7 @@ CCS_ICD_PCS_categories <- CCS_ICD10PCS_cat %>%
 CCS_PCS_categories <- CCS_ICD_PCS_categories %>% 
   full_join(CCS_HCPCS_cat, by = c("category_code" = "cat_code")) %>% 
   transmute(code_chapter = ifelse(category_code == 244, "Operations on the digestive system", 
-                                ifelse(category_code >= 232, "Miscellaneous diagnostic and therapeutic procedures", bodysystem)),
+                                ifelse(category_code >= 232, "Miscellaneous diagnostic and therapeutic procedures", code_chapter)),
             category_code = category_code,
             category_desc = cat_desc)
 
@@ -149,11 +151,14 @@ CCS_PCS_mapping <- bind_rows(CCS_ICD9PCS_map, CCS_ICD10PCS_map, CCS_HCPCS_map)
 # write_rds(CCS_PCS_cat, "data/CCS_PCS_categories.rds")
 # write_rds(CCS_PCS_mapping, "data/CCS_PCS_mapping.rds")
 
+#99281–99285 ED
 
-# CCS_PCS_mapping %>% 
-#  group_by(category_code, code_type) %>% 
-#  count() %>% 
-#  View()
+
+CCS_PCS_mapping %>%
+inner_join(CCS_PCS_categories, by = "category_code") %>%
+ group_by(category_code, category_desc, vocabulary_id) %>%
+ count() %>%
+ View()
 
 
 

@@ -9,12 +9,12 @@ source('data-raw/util.R')
 ###
 ##########################################################
 
-download_extract(url = "https://hcup-us.ahrq.gov/toolssoftware/ccsr/DXCCSR_v2023-1.zip",
+download_extract(url = "https://hcup-us.ahrq.gov/toolssoftware/ccsr/DXCCSR_v2025-1.zip",
                  exdir = "data-raw",
-                 files = c("DXCCSR-Reference-File-v2023-1.xlsx"))
+                 files = c("DXCCSR-Reference-File-v2025-1.xlsx"))
 
 
-CCSR_DX_src <- readxl::read_xlsx("data-raw/DXCCSR-Reference-File-v2023-1.xlsx", 
+CCSR_DX_src <- readxl::read_xlsx("data-raw/DXCCSR-Reference-File-v2025-1.xlsx", 
                                  sheet = "CCSR_Categories",
                                  skip = 1)
 
@@ -45,7 +45,7 @@ CCSR_DX_src <- readxl::read_xlsx("data-raw/DXCCSR-Reference-File-v2023-1.xlsx",
 # )
 
 
-CCSR_DX_chapters <- readxl::read_xlsx("data-raw/DXCCSR-Reference-File-v2023-1.xlsx", 
+CCSR_DX_chapters <- readxl::read_xlsx("data-raw/DXCCSR-Reference-File-v2025-1.xlsx", 
                                  sheet = "Naming_Conventions",
                                  skip = 1) %>% 
   mutate(chapter_number = row_number()) %>% 
@@ -59,10 +59,11 @@ CCSR_DX_categories <- CCSR_DX_src %>%
   left_join(CCSR_DX_chapters, by="chapter_abbr") %>% 
   select(chapter_abbr, chapter_number, chapter_desc, 
          CCSR_category_code = `CCSR Category`, 
-         CCSR_category_desc = `CCSR Category Description`)
+         CCSR_category_desc = `CCSR Category Description`) |> 
+  filter(!grepl("XXX", CCSR_category_code))
 
 
-CCSR_DX_map_src <- readxl::read_xlsx("data-raw/DXCCSR-Reference-File-v2023-1.xlsx", 
+CCSR_DX_map_src <- readxl::read_xlsx("data-raw/DXCCSR-Reference-File-v2025-1.xlsx", 
                                  sheet = "DX_to_CCSR_Mapping",
                                  skip = 1)
 
