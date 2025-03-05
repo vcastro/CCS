@@ -9,7 +9,7 @@ A data frame with 139422 obs. and 3 variables:
 \describe{
   \item{category_code}{Numeric CCS procedure category code}
   \item{code}{ICD-9, ICD-10, or HCPCS procedure code, without prefixes or decimals}
-  \item{code_type}{Either ICD-9-PCS, ICD-10-PCS or HCPCS}
+  \item{vocabulary_id}{Either ICD9PCS, ICD10PCS or HCPCS}
 }
 }
 \source{

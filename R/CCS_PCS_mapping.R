@@ -7,7 +7,7 @@
 #' \describe{
 #'   \item{category_code}{Numeric CCS procedure category code}
 #'   \item{code}{ICD-9, ICD-10, or HCPCS procedure code, without prefixes or decimals}
-#'   \item{code_type}{Either ICD-9-PCS, ICD-10-PCS or HCPCS}
+#'   \item{vocabulary_id}{Either ICD9PCS, ICD10PCS or HCPCS}
 #' }
 #' @seealso \code{\link{CCS_PCS_categories}} for a list of CCS procedure categories.
 #'

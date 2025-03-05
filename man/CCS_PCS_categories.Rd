@@ -7,7 +7,7 @@
 \format{
 A data frame with 244 obs. and 3 variables:
 \describe{
-  \item{bodysystem}{CCS Level 1 description based on ICD body system}
+  \item{code_chapter}{CCS Level 1 description based on ICD body system}
   \item{category_code}{Numeric CCS procedure category code}
   \item{category_desc}{Description of CCS procedure category}
 }
